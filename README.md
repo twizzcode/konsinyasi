@@ -1,37 +1,88 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# KonsinyasiKu Backend
 
-## Getting Started
+Backend API untuk aplikasi konsinyasi berbasis Next.js App Router, Drizzle ORM, PostgreSQL, dan Supabase Storage.
 
-First, run the development server:
+## Stack
+
+- Next.js `16`
+- React `19`
+- Drizzle ORM
+- PostgreSQL
+- Supabase Storage
+- Zod
+
+## Menjalankan Project
+
+1. Copy env dari [.env.example](/home/twizzcode/programming/konsiyasi/backend/.env.example:1)
+2. Isi semua variable yang dibutuhkan
+3. Install dependency
+4. Jalankan server development
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
+bun install
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Server local akan berjalan di `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment Variable
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Variable yang dipakai project ini:
 
-## Learn More
+```env
+DATABASE_URL=
 
-To learn more about Next.js, take a look at the following resources:
+NEXT_PUBLIC_SUPABASE_URL=
+SUPABASE_SERVICE_ROLE_KEY=
+SUPABASE_STORAGE_BUCKET=product-images
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
+CLERK_SECRET_KEY=
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+APP_ENV=development
+```
 
-## Deploy on Vercel
+Keterangan singkat:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `DATABASE_URL`: koneksi database PostgreSQL
+- `NEXT_PUBLIC_SUPABASE_URL`: base URL project Supabase
+- `SUPABASE_SERVICE_ROLE_KEY`: key backend untuk upload storage
+- `SUPABASE_STORAGE_BUCKET`: bucket upload gambar
+- `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` dan `CLERK_SECRET_KEY`: disiapkan untuk integrasi Clerk
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# konsinyasi
+## Base URL API
+
+API aplikasi ini adalah API Next.js dengan prefix `/api`.
+
+Contoh:
+
+- Health check: `GET /api/health`
+- Upload file: `POST /api/upload`
+- Daftar toko: `GET /api/stores`
+
+## Autentikasi
+
+Saat ini route yang butuh autentikasi membaca salah satu header berikut:
+
+- `x-user-id`
+- `x-clerk-id`
+
+User tersebut harus sudah ada di tabel `users`. Sinkronisasi user lokal bisa dilakukan lewat endpoint `POST /api/users/sync`.
+
+## Dokumentasi Lengkap
+
+Dokumentasi endpoint, query parameter, body request, role akses, response, dan storage tersedia di:
+
+- [docs/API.md](/home/twizzcode/programming/konsiyasi/backend/docs/API.md:1)
+
+## Script
+
+```bash
+bun dev
+bun build
+bun start
+bun lint
+bun run db:generate
+bun run db:migrate
+bun run db:push
+```
