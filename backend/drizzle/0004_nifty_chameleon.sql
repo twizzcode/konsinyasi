@@ -1,0 +1,2 @@
+ALTER TABLE "consigned_products" ADD COLUMN "initial_quantity" integer DEFAULT 0 NOT NULL;--> statement-breakpoint
+ALTER TABLE "consigned_products" ADD COLUMN "current_stock" integer DEFAULT 0 NOT NULL;
