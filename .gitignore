@@ -8,6 +8,8 @@ backend/node_modules/
 # Expo
 .expo/
 frontend/.expo/
+.next/
+backend/.next/
 dist/
 web-build/
 expo-env.d.ts
