@@ -26,7 +26,7 @@ export function AppScreen({
   children,
   scroll = true,
   contentStyle,
-  safeTop = true,
+  safeTop = false,
 }: {
   children: ReactNode;
   scroll?: boolean;

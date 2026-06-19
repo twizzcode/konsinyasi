@@ -1,11 +1,13 @@
-import { env } from '@/lib/env';
+import { getAuthBaseUrl } from '@/lib/auth-base-url';
 
 const getApiBaseUrl = () => {
-  if (!env.authBaseUrl) {
+  const authBaseUrl = getAuthBaseUrl();
+
+  if (!authBaseUrl) {
     throw new Error('EXPO_PUBLIC_AUTH_BASE_URL is required');
   }
 
-  return env.authBaseUrl.replace(/\/$/, '');
+  return authBaseUrl;
 };
 
 export async function apiGet<T>(path: string) {

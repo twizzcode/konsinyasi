@@ -15,7 +15,7 @@ export default function SplashScreen() {
 
     const timer = setTimeout(() => {
       if (ready && session) {
-        router.replace('/home');
+        router.replace('/(tabs)/home');
         return;
       }
 

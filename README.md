@@ -43,6 +43,12 @@ Nilai penting:
 - Frontend: `EXPO_PUBLIC_AUTH_BASE_URL`, `EXPO_PUBLIC_SUPABASE_URL`, `EXPO_PUBLIC_SUPABASE_ANON_KEY`
 - Backend: `DATABASE_URL`, `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`
 
+Catatan development dengan Expo Go:
+
+- Jika app dibuka dari HP via scan QR, jangan pakai `localhost` atau `10.0.2.2` untuk backend auth.
+- Isi `EXPO_PUBLIC_AUTH_BASE_URL` dan `BETTER_AUTH_URL` dengan IP LAN mesin yang menjalankan backend, misalnya `http://192.168.1.10:3005`.
+- `10.0.2.2` hanya untuk Android emulator, bukan device fisik.
+
 ## Status saat ini
 
 - Login dan register email/password di frontend sudah tersambung ke Better Auth.

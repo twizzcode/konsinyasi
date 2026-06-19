@@ -41,10 +41,53 @@ class ResponseBuilder {
 
 export type ApiResponse = Pick<ResponseBuilder, 'status' | 'json'>;
 
-const allowedOrigins = (process.env.CORS_ORIGIN ?? '')
-  .split(',')
-  .map((origin) => origin.trim())
-  .filter(Boolean);
+const isDevelopment = process.env.NODE_ENV !== 'production';
+
+const expoDevelopmentOrigins = isDevelopment
+  ? [
+    'exp://**',
+    'exp://192.168.*.*:*',
+    'exp://10.0.*.*:*',
+    'exp://172.16.*.*:*',
+    'exp://172.17.*.*:*',
+    'exp://172.18.*.*:*',
+    'exp://172.19.*.*:*',
+    'exp://172.20.*.*:*',
+    'exp://172.21.*.*:*',
+    'exp://172.22.*.*:*',
+    'exp://172.23.*.*:*',
+    'exp://172.24.*.*:*',
+    'exp://172.25.*.*:*',
+    'exp://172.26.*.*:*',
+    'exp://172.27.*.*:*',
+    'exp://172.28.*.*:*',
+    'exp://172.29.*.*:*',
+    'exp://172.30.*.*:*',
+    'exp://172.31.*.*:*',
+  ]
+  : [];
+
+const allowedOrigins = [
+  ...expoDevelopmentOrigins,
+  ...(process.env.CORS_ORIGIN ?? '')
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean),
+];
+
+const normalizeOriginValue = (value: string) => value.replace(/\/+$/, '').replace(/\/\*\*$/, '');
+
+const matchesOriginPattern = (origin: string, pattern: string) => {
+  const normalizedOrigin = normalizeOriginValue(origin);
+  const normalizedPattern = normalizeOriginValue(pattern);
+  const escapedPattern = normalizedPattern.replace(/[.+?^${}()|[\]\\]/g, '\\$&');
+  const regex = new RegExp(`^${escapedPattern.replace(/\*/g, '.*')}$`);
+
+  return regex.test(normalizedOrigin);
+};
+
+const isAllowedOrigin = (origin: string) =>
+  allowedOrigins.length === 0 || allowedOrigins.some((pattern) => matchesOriginPattern(origin, pattern));
 
 const routeMatches = (routeSegments: string[], pathSegments: string[]) => {
   if (routeSegments.length !== pathSegments.length) {
@@ -100,7 +143,7 @@ export const getCorsHeaders = (request: Request) => {
     return headers;
   }
 
-  if (allowedOrigins.length === 0 || allowedOrigins.includes(origin)) {
+  if (isAllowedOrigin(origin)) {
     headers.set('Access-Control-Allow-Origin', origin);
     headers.set('Vary', 'Origin');
   }
@@ -110,7 +153,7 @@ export const getCorsHeaders = (request: Request) => {
 
 export const hasDisallowedOrigin = (request: Request) => {
   const origin = request.headers.get('origin');
-  return Boolean(origin && allowedOrigins.length > 0 && !allowedOrigins.includes(origin));
+  return Boolean(origin && !isAllowedOrigin(origin));
 };
 
 export const createPreflightResponse = (request: Request) => new Response(null, {

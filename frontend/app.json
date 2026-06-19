@@ -7,6 +7,11 @@
     "icon": "./assets/images/icon.png",
     "scheme": "konsinyasiku",
     "userInterfaceStyle": "light",
+    "androidStatusBar": {
+      "backgroundColor": "#10B981",
+      "barStyle": "light-content",
+      "translucent": false
+    },
     "ios": {
       "icon": "./assets/images/icon.png",
       "bundleIdentifier": "id.konsinyasiku.mobile"
@@ -18,7 +23,10 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": true,
-      "package": "id.konsinyasiku.mobile"
+      "package": "id.konsinyasiku.mobile",
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "output": "single",
@@ -41,10 +49,17 @@
           "cameraPermission": "KonsinyasiKu memerlukan akses kamera untuk mengambil foto barang."
         }
       ],
-      "expo-sharing"
+      "expo-sharing",
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "efa6e811-4079-4ead-b05a-06eac831d3a8"
+      }
     }
   }
 }

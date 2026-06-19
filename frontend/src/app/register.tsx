@@ -28,7 +28,7 @@ export default function RegisterScreen() {
 
   useEffect(() => {
     if (session) {
-      router.replace('/home');
+      router.replace('/(tabs)/home');
     }
   }, [router, session]);
 
@@ -63,13 +63,22 @@ export default function RegisterScreen() {
         return;
       }
 
-      await refreshSession();
+      const nextSession = await refreshSession();
+      if (!nextSession) {
+        showToast({
+          title: 'Session belum aktif',
+          message: 'Akun berhasil dibuat, tapi sesi belum terbaca di aplikasi. Coba masuk lagi.',
+          tone: 'error',
+        });
+        return;
+      }
+
       showToast({
         title: 'Akun berhasil dibuat',
         message: `Akun ${accountType === 'store' ? 'toko' : 'penyuplai'} untuk ${businessName.trim()} sudah aktif.`,
         tone: 'success',
       });
-      router.replace('/home');
+      router.replace('/(tabs)/home');
     } catch {
       showToast({ title: 'Pendaftaran gagal', message: 'Tidak dapat terhubung ke server autentikasi.', tone: 'error' });
     } finally {

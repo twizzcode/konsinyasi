@@ -20,7 +20,7 @@ export default function LoginScreen() {
 
   useEffect(() => {
     if (session) {
-      router.replace('/home');
+      router.replace('/(tabs)/home');
     }
   }, [router, session]);
 
@@ -48,9 +48,18 @@ export default function LoginScreen() {
         return;
       }
 
-      await refreshSession();
+      const nextSession = await refreshSession();
+      if (!nextSession) {
+        showToast({
+          title: 'Session belum aktif',
+          message: 'Login berhasil, tapi sesi belum terbaca di aplikasi. Coba masuk lagi.',
+          tone: 'error',
+        });
+        return;
+      }
+
       showToast({ title: 'Login berhasil', message: 'Selamat datang kembali.', tone: 'success' });
-      router.replace('/home');
+      router.replace('/(tabs)/home');
     } catch {
       showToast({ title: 'Login gagal', message: 'Tidak dapat terhubung ke server autentikasi.', tone: 'error' });
     } finally {

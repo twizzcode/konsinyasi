@@ -1,0 +1,29 @@
+{
+  "cli": {
+    "version": ">= 16.24.0"
+  },
+  "build": {
+    "preview": {
+      "distribution": "internal",
+      "env": {
+          "EXPO_PUBLIC_AUTH_BASE_URL":
+          "https://konsinyasi.vercel.app",
+          "EXPO_PUBLIC_MOBILE_SCHEME":
+          "konsinyasiku",
+          "EXPO_PUBLIC_SUPABASE_URL":
+          "https://zwyluchecvrcwghqdwqd.supabase.co",
+          "EXPO_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp3eWx1Y2hlY3ZyY3dnaHFkd3FkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxNzMyNjYsImV4cCI6MjA5NDc0OTI2Nn0.FUrtbrnzKtD49dvs8tOp-Zr6-N7NW3hT9MWpYPDRyvM",
+          "EXPO_PUBLIC_SUPABASE_STORAGE_BUCKET":
+          "product-images"
+        },
+      "android": {
+        "buildType": "apk"
+      }
+    },
+    "production": {
+      "android": {
+        "buildType": "app-bundle"
+      }
+    }
+  }
+}

@@ -21,7 +21,7 @@ export default function OnboardingScreen() {
 
   useEffect(() => {
     if (session) {
-      router.replace('/home');
+      router.replace('/(tabs)/home');
     }
   }, [router, session]);
 

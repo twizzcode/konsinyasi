@@ -1,45 +1,51 @@
 import { createContext, type ReactNode, useContext, useEffect, useState } from 'react';
 import { authClient } from '@/lib/auth-client';
-import { envStatus } from '@/lib/env';
+import { isAuthReady } from '@/lib/auth-base-url';
 
 interface AuthContextValue {
   user: unknown;
   session: unknown;
   loading: boolean;
   ready: boolean;
-  refreshSession: () => Promise<void>;
+  refreshSession: () => Promise<unknown>;
   signOut: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
+  const authReady = isAuthReady();
   const [user, setUser] = useState<unknown>(null);
   const [session, setSession] = useState<unknown>(null);
-  const [loading, setLoading] = useState(envStatus.authReady);
+  const [loading, setLoading] = useState(authReady);
 
   const refreshSession = async () => {
-    if (!envStatus.authReady) {
+    if (!authReady) {
       setLoading(false);
-      return;
+      return null;
     }
 
     setLoading(true);
 
     try {
       const result = await authClient.getSession();
-      setSession(result.data?.session ?? null);
-      setUser(result.data?.user ?? null);
+      const nextSession = result.data?.session ?? null;
+      const nextUser = result.data?.user ?? null;
+
+      setSession(nextSession);
+      setUser(nextUser);
+      return nextSession;
     } catch {
       setSession(null);
       setUser(null);
+      return null;
     } finally {
       setLoading(false);
     }
   };
 
   const signOut = async () => {
-    if (!envStatus.authReady) return;
+    if (!authReady) return;
 
     try {
       await authClient.signOut();
@@ -57,7 +63,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     user,
     session,
     loading,
-    ready: envStatus.authReady,
+    ready: authReady,
     refreshSession,
     signOut,
   };
